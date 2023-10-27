@@ -13,35 +13,38 @@ const UserTable: React.FC<{}> = () => {
   };
 
   return (
-    <div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Avatar</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Position</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} onClick={() => handleClickUserRow(user)} style={{ cursor: "pointer" }}>
-              <td>
-                <img
-                  className="user-table-avatar"
-                  src={user.avatar?.link}
-                  alt={`Avatar of ${user.firstName} ${user.lastName}`}
-                />
-              </td>
-              <td>{`${user.firstName} ${user.lastName}`}</td>
-              <td>{user.email}</td>
-              <td>{user.position}</td>
-              <td>{user.phone}</td>
+    <div className="container">
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Avatar</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Position</th>
+              <th>Phone</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id} onClick={() => handleClickUserRow(user)} style={{ cursor: "pointer" }}>
+                <td>
+                  <img
+                    className="user-table-avatar"
+                    src={user.avatar?.link}
+                    alt={`Avatar of ${user.firstName} ${user.lastName}`}
+                  />
+                </td>
+                <td>{`${user.firstName} ${user.lastName}`}</td>
+                <td>{user.email}</td>
+                <td>{user.position}</td>
+                <td>{user.phone}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 };
