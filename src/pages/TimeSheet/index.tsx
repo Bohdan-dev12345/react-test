@@ -35,7 +35,7 @@ const TimeSheet: React.FC<{}> = () => {
       <div className="table-responsive">
         <a className="btn btn-primary" href="/">Back</a>
         <select
-          className="form-select mt-4 mb-4"
+          className="form-select select-width mt-4 mb-4"
           aria-label="Default select example"
           value={selectedMonth}
           onChange={handleSelectMonthChange}
@@ -60,17 +60,23 @@ const TimeSheet: React.FC<{}> = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSheets.map((timesheet) => (
-              <tr key={timesheet.id}>
-                <td>{`${activeUser?.firstName} ${activeUser?.lastName}`}</td>
-                <td>{activeUser?.email}</td>
-                <td>{activeUser?.position}</td>
-                <td>{timesheet.assessment}</td>
-                <td>{dateFormat(timesheet.startTime, "yyyy-MM-dd HH:mm:ss")}</td>
-                <td>{dateFormat(timesheet.endTime, "yyyy-MM-dd HH:mm:ss")}</td>
-                <td>{timesheet.status}</td>
+            {filteredSheets.length === 0 ? (
+              <tr>
+                <td colSpan={7} style={{textAlign: 'center'}}>There is no timesheet at this month.</td>
               </tr>
-            ))}
+            ) : (
+              filteredSheets.map((timesheet) => (
+                <tr key={timesheet.id}>
+                  <td>{`${activeUser?.firstName} ${activeUser?.lastName}`}</td>
+                  <td>{activeUser?.email}</td>
+                  <td>{activeUser?.position}</td>
+                  <td>{timesheet.assessment}</td>
+                  <td>{dateFormat(timesheet.startTime, "yyyy-MM-dd HH:mm:ss")}</td>
+                  <td>{dateFormat(timesheet.endTime, "yyyy-MM-dd HH:mm:ss")}</td>
+                  <td>{timesheet.status}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
