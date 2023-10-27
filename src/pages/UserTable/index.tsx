@@ -5,12 +5,13 @@ import { IUser } from "../../interfaces/IUser";
 
 const UserTable: React.FC<{}> = () => {
   const { users, setActiveUser } = useContext(UserContext);
-  
   const navigate = useNavigate();
+
   const handleClickUserRow = (user: IUser) => {
-    setActiveUser(() => user);
+    setActiveUser(user);
     navigate("/timesheet");
   };
+
   return (
     <div>
       <table className="table table-striped">
@@ -25,9 +26,13 @@ const UserTable: React.FC<{}> = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} onClick={() => handleClickUserRow(user)}>
+            <tr key={user.id} onClick={() => handleClickUserRow(user)} style={{ cursor: "pointer" }}>
               <td>
-                <img className="user-table-avatar" src={user.avatar?.link} alt="user avatar" />
+                <img
+                  className="user-table-avatar"
+                  src={user.avatar?.link}
+                  alt={`Avatar of ${user.firstName} ${user.lastName}`}
+                />
               </td>
               <td>{`${user.firstName} ${user.lastName}`}</td>
               <td>{user.email}</td>
@@ -40,4 +45,5 @@ const UserTable: React.FC<{}> = () => {
     </div>
   );
 };
+
 export default UserTable;
