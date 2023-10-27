@@ -6,53 +6,45 @@ import { ITimeSheet } from "../../interfaces/ITimeSheet";
 
 const TimeSheet: React.FC<{}> = () => {
   const { activeTimeSheets, activeUser } = useContext(UserContext);
-  const [filteredSheets, setFilteredSheets] =
-    useState<ITimeSheet[]>(activeTimeSheets);
+  const [filteredSheets, setFilteredSheets] = useState<ITimeSheet[]>(activeTimeSheets);
+  const [selectedMonth, setSelectedMonth] = useState<string>("");
 
-  const [month, setMonth] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (activeTimeSheets.length) {
-      setFilteredSheets(activeTimeSheets);
-    }
+    setFilteredSheets(activeTimeSheets);
   }, [activeTimeSheets]);
 
-  const handleSelectMonthChange = (e: any) => {
-    const { value } = e.target;
-    setMonth(() => value);
+  const handleSelectMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedMonth(value);
+    
     if (value) {
-      setFilteredSheets(
-        activeTimeSheets.filter(
-          (sheet) => new Date(sheet.startTime).getMonth() === Number(value) - 1
-        )
-      );
-    }else{
+      const filteredSheets = activeTimeSheets.filter((sheet) => {
+        const sheetMonth = new Date(sheet.startTime).getMonth() + 1; // Months are 0-based
+        return sheetMonth === Number(value);
+      });
+      setFilteredSheets(filteredSheets);
+    } else {
       setFilteredSheets(activeTimeSheets);
     }
   };
+
   return (
     <div>
       <a className="btn btn-primary" href="/">Back</a>
       <select
         className="form-select mt-4 mb-4"
         aria-label="Default select example"
-        value={month}
-        onChange={(e) => handleSelectMonthChange(e)}
+        value={selectedMonth}
+        onChange={handleSelectMonthChange}
       >
         <option value="">Select a month</option>
-        <option value="1">Jan</option>
-        <option value="2">Feb</option>
-        <option value="3">Mar</option>
-        <option value="4">Apr</option>
-        <option value="5">May</option>
-        <option value="6">Jun</option>
-        <option value="7">Jul</option>
-        <option value="8">Aug</option>
-        <option value="9">Sep</option>
-        <option value="10">Oct</option>
-        <option value="11">Nov</option>
-        <option value="12">Dec</option>
+        {Array.from({ length: 12 }, (_, i) => (
+          <option key={i + 1} value={String(i + 1)}>
+            {new Date(0, i).toLocaleString(undefined, { month: "short" })}
+          </option>
+        ))}
       </select>
       <table className="table table-striped">
         <thead>
@@ -83,4 +75,5 @@ const TimeSheet: React.FC<{}> = () => {
     </div>
   );
 };
+
 export default TimeSheet;
